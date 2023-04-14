@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="page-breadcrumb bg-white">
+	<div class="row align-items-center">
+		<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+			<h4 class="page-title">Games</h4>
+		</div>
+		<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+			<div class="d-md-flex">
+				<ol class="breadcrumb ms-auto">
+					
+				</ol>
+				<a href="#" data-toggle="modal" data-target="#addGame" class="add-game-btn" target="_blank">Add new game</a>
+				<a href="{% url 'renew' %}" class="btn btn-info  d-none d-md-block pull-right ms-3 hidden-xs hidden-sm waves-effect waves-light text-white"><i class="fas fa-bolt"></i> Refresh</a>
+				
+			</div>
+		</div>
+	</div>
+	<!-- /.col-lg-12 -->
+</div>
+<div class="container-fluid">
+		<!-- ============================================================== -->
+	<!-- PRODUCTS YEARLY SALES -->
+	<!-- ============================================================== -->
+	<div class="row"></div>
+	{% for game in games %}
+		<div class="col-lg-3 col-md-6">
+			<div class="card">
+				<a href="{{ game.slug }}" class="card-image"> 
+					<img src="{{ game.photo.url }}" alt="user" />
+				</a>
+				<div class="card-info">
+					<span class="card-name">{{ game.name }}</span>
+					<span class="rating-indicator {% if game.prev_avg > game.get_avg %}down{% elif game.get_avg > game.prev_avg %}up{% else %}neutral{% endif %}">{{ game.get_avg|floatformat:"1" }}</span>
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+	</div>
+</div>
+<div class="modal fade" id="addGame" role="dialog">
+	<div class="modal-dialog">
+
+		<!-- Modal content-->
+		<div class="modal-content">
+			<form method="POST" action="{% url 'games' %}">
+				{% csrf_token %}
+				<div class="modal-header">
+					<h4 class="modal-title">Add New Game</h4>
+				</div>
+				<div class="modal-body">
+					<p class="modal-text">Insert the game ID</p>
+					{{ form.bggid }}
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-info">Add</button>
+					<a href="#" class="btn btn-default" data-dismiss="modal">Close</a>
+				</div>
+			</form>
+		</div>
+
+	</div>
+</div>
+{% endblock %}

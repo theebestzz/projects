@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load mathfilters %}
+{% block jquery %}
+
+
+{% endblock %}
+
+{% block content %}
+<div class="page-breadcrumb bg-white">
+	<div class="row align-items-center">
+		<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+			<h4 class="page-title">Dashboard</h4>
+		</div>
+		<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+			<div class="d-md-flex">
+				<ol class="breadcrumb ms-auto">
+					
+				</ol>
+				<a href="#" data-toggle="modal" data-target="#addGame" class="add-game-btn" target="_blank">Add new game</a>
+				<a href="{% url 'renew' %}" class="btn btn-info  d-none d-md-block pull-right ms-3 hidden-xs hidden-sm waves-effect waves-light text-white"><i class="fas fa-bolt"></i> Refresh</a>
+				
+			</div>
+		</div>
+	</div>
+</div>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-9 col-lg-9 col-sm-9 col-xs-9">
+			<div class="white-box">
+				<ul class="chart-legend">
+					{% for game in games %}
+					<li><h5><i class="fa fa-circle me-1" style="color: {{ game.color }};"></i>{{ game }}</h5></li>
+					{% endfor %}
+				</ul>
+				<div id="ct-visits">
+					<canvas id="myChart" height="170"></canvas>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3 col-lg-3 col-sm-3">
+			<div class="card white-box p-0">
+				<div class="card-body">
+					<h3 class="box-title mb-0">Last 7 days</h3>
+				</div>
+				<div class="comment-widgets">
+					{% for game in games %}
+					<!-- Comment Row -->
+					<div class="d-flex flex-row comment-row mt-0">
+						<div><img src="{{ game.photo.url }}" alt="user" width="35" class="rounded"></div>
+						<div class="comment-text ps-2 ps-md-3 w-100">
+							<h5 class="font-medium">{{ game.name }}</h5>
+							<div class="comment-footer d-md-flex align-items-center">
+								{% if game.week_avg > game.get_avg %}
+								<span class="decreasing"><i class="fas fa-caret-down"></i> {{ game.week_avg|sub:game.get_avg|floatformat:"3" }}</span>
+								<span class="badge bg-danger rounded">{{ game.week_percent|floatformat:"1"}}%</span>
+								{% elif game.get_avg > game.week_avg %}
+								<span class="increasing"><i class="fas fa-caret-up"></i> {{ game.get_avg|sub:game.week_avg|floatformat:"3" }}</span>
+								<span class="badge bg-success rounded">{{ game.week_percent|floatformat:"1"}}%</span>
+								{% else %}
+								<span class="neutral">No change</span>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+			<div class="card white-box p-0">
+				<div class="card-body">
+					<h3 class="box-title mb-0">Last 30 days</h3>
+				</div>
+				<div class="comment-widgets">
+					{% for game in games %}
+					<!-- Comment Row -->
+					<div class="d-flex flex-row comment-row mt-0">
+						<div><img src="{{ game.photo.url }}" alt="user" width="35" class="rounded"></div>
+						<div class="comment-text ps-2 ps-md-3 w-100">
+							<h5 class="font-medium">{{ game.name }}</h5>
+							<div class="comment-footer d-md-flex align-items-center">
+								{% if game.month_avg > game.get_avg %}
+								<span class="decreasing"><i class="fas fa-caret-down"></i> {{ game.month_avg|sub:game.get_avg|floatformat:"3" }}</span>
+								<span class="badge bg-danger rounded">{{ game.month_percent|floatformat:"1"}}%</span>
+								{% elif game.get_avg > game.month_avg %}
+								<span class="increasing"><i class="fas fa-caret-up"></i> {{ game.get_avg|sub:game.month_avg|floatformat:"3" }}</span>
+								<span class="badge bg-success rounded">{{ game.month_percent|floatformat:"1"}}%</span>
+								{% else %}
+								<span class="neutral">No change</span>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+var ctx = document.getElementById('myChart')
+var myChart = new Chart(ctx, {
+	type: 'line',
+	data: {
+		labels: [{% for label in labels %} "{{ label }}", {% endfor %} ],
+		datasets: [
+			{% for game in games %}
+			{
+				label: "{{game.name}}",
+				data: [{% for a in game.average %} "{{ a }}", {% endfor %}],
+				borderColor: '{{ game.color }}',
+				backgroundColor: '{{ game.color }}',
+				borderWidth: 1,
+				fill: false,
+			},
+			{% endfor %}
+		]
+	},
+	options: {
+		legend: {
+			display: false,
+		},
+		scales: {
+			yAxes: [{
+				ticks: {
+					beginAtZero: true
+				}
+			}]
+		}
+	}
+});
+</script>
+{% endblock %}

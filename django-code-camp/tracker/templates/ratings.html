@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="page-breadcrumb bg-white">
+	<div class="row align-items-center">
+		<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+			<h4 class="page-title">{{ name }}</h4>
+		</div>
+		<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+			<div class="d-md-flex">
+				<ol class="breadcrumb ms-auto">
+				</ol>
+				<a href="{% url 'renew' %}" class="btn btn-info  d-none d-md-block pull-right ms-3 hidden-xs hidden-sm waves-effect waves-light text-white"><i class="fas fa-bolt"></i> Refresh</a>
+			</div>
+		</div>
+	</div>
+	<!-- /.col-lg-12 -->
+</div>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+			<div class="white-box">
+				<ul class="chart-legend">
+					<li><h5><i class="fa fa-circle me-1" style="color: rgb(204, 0, 102);"></i>Average Rating</h5></li>
+					<li><h5><i class="fa fa-circle me-1" style="color: rgb(51, 204, 204);"></i>Geek Rating</h5></li>
+				</ul>
+				<div id="ct-visits">
+					<canvas id="gameChart" height="50"></canvas>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="white-box">
+				<h3 class="box-title">Ratings</h3>
+				<p class="text-muted">Chronological ratings for <code>{{ name }}</code></p>
+				<div class="table-responsive">
+					<table class="table text-nowrap">
+						<thead>
+							<tr>
+								<th class="border-top-0">Date</th>
+								<th class="border-top-0">Voters</th>
+								<th class="border-top-0">Average Rating</th>
+								<th class="border-top-0">Geek Rating</th>
+								<th class="border-top-0">Rank Overall</th>
+								
+								{% if ratings.last.strategy_rank > 0 %}<th class="border-top-0">Strategy Rank</th>{% endif %}
+								{% if ratings.last.customizable_rank > 0  %}<th class="border-top-0">Customizable Rank</th>{% endif %}
+								{% if ratings.last.thematic_rank > 0  %}<th class="border-top-0">Thematic Rank</th>{% endif %}
+								{% if ratings.last.abstract_rank > 0 %}<th class="border-top-0">Abstract Rank</th>{% endif %}
+								{% if ratings.last.family_rank > 0  %}<th class="border-top-0">Family Rank</th>{% endif %}
+								{% if ratings.last.children_rank > 0 %}<th class="border-top-0">Children's Rank</th>{% endif %}
+								{% if ratings.last.party_rank > 0 %}<th class="border-top-0">Party Rank</th>{% endif %}
+								{% if ratings.last.wargame_rank > 0 %}<th class="border-top-0">Wargames Rank</th>{% endif %}
+							</tr>
+						</thead>
+						<tbody>
+							{% for rating in ratings %}
+							<tr>
+								<td>{{ rating.updated_on }}</td>
+								<td>{{ rating.voters }}</td>
+								<td>{{ rating.average_rating|floatformat:"1" }} <span style="color: #57b2b7; font-size: 13px; padding-bottom: 3px; position: relative; left: 3px; top: -2px;">({{ rating.average_rating|floatformat:"3"  }})</span></td>
+								<td>{{ rating.geek_rating }}</td>
+								<td>{{ rating.rank_overall }}</td>
+
+								{% if rating.strategy_rank > 0  %}<td>{{ rating.strategy_rank }}</td>{% endif %}
+								{% if rating.customizable_rank > 0  %}<td>{{ rating.customizable_rank }}</td>{% endif %}
+								{% if rating.thematic_rank > 0  %}<td>{{ rating.thematic_rank }}</td>{% endif %}
+								{% if rating.abstract_rank > 0 %}<td>{{ rating.abstract_rank }}</td>{% endif %}
+								{% if rating.family_rank > 0 %}<td>{{ rating.family_rank }}</td>{% endif %}
+								{% if rating.children_rank > 0  %}<td>{{ rating.children_rank }}</td>{% endif %}
+								{% if rating.party_rank > 0 %}<td>{{ rating.party_rank }}</td>{% endif %}
+								{% if rating.wargame_rank > 0 %}<td>{{ rating.wargame_rank }}</td>{% endif %}
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	var ctx = document.getElementById('gameChart')
+	var myChart = new Chart(ctx, {
+		type: 'line',
+		data: {
+			labels: [{% for label in labels %} "{{ label }}", {% endfor %} ],
+			datasets: [
+				{
+					label: "Average Rating",
+					data: [{% for a in game.average %} "{{ a }}", {% endfor %}],
+					backgroundColor: 'rgb(204, 0, 102)',
+            		borderColor: 'rgb(204, 0, 102)',
+					borderWidth: 1,
+					fill: false,
+				},
+				{
+					label: "Geek Rating",
+					data: [{% for a in game.geek_average %} "{{ a }}", {% endfor %}],
+					backgroundColor: 'rgb(51, 204, 204)',
+            		borderColor: 'rgb(51, 204, 204)',
+					borderWidth: 1,
+					fill: false,
+				},
+			]
+		},
+		options: {
+			legend: {
+				display: false,
+			},
+			scales: {
+				yAxes: [{
+					ticks: {
+						beginAtZero: true
+					}
+				}]
+			}
+		}
+	});
+	</script>
+{% endblock %}

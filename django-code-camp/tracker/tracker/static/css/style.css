@@ -1,0 +1,151 @@
+a:hover {
+  text-decoration: none !important;
+}
+.modal-text {
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+  text-align: center;
+}
+.modal-body > input[type="number"] {
+  width: 100%;
+  height: 40px;
+  margin: 7px 0px 0px 0px;
+  padding: 0px 15px;;
+  border: 1px solid #818080;
+  text-align: center;
+  font-size: 19px;
+  border-radius: 4px;
+}
+.modal-footer > a{
+ float: left;
+}
+.modal-footer > button{
+  float: right;
+ }
+ html, body {
+   background-color: #edf1f5 !important;
+ }
+ input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
+.rating-indicator {
+  display: inline-block;
+  width: 35px;
+  height: 30px;
+  color: #ffffff;
+  border-radius: 5px;
+  font-weight: bold;
+  text-align: center;
+  padding: 5px 0px;
+  position: absolute;
+  top: 17px;
+  right: 20px;
+}
+.rating-indicator.up {
+  background-color: #48e496;
+}
+.rating-indicator.down {
+  background-color: #eb4c61;
+}
+.rating-indicator.neutral {
+  background-color: #717171;
+}
+.card-image {
+  float: left;
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+}
+.card-image > img {
+  float: left;
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+}
+.card-info {
+  width: 100%;
+  padding: 20px 65px 20px 20px;
+  margin: 0px;
+  position: relative;
+}
+.card-info > .card-name {
+  text-overflow: ellipsis;
+  overflow: hidden !important;
+  white-space: nowrap;
+  padding-bottom: 1px;
+  color: #000;
+  float: left;
+  width: 100%;
+  font-weight: bold;
+  font-size: 16px;
+}
+.add-game-btn {
+  padding: 6px 10px;
+}
+.add-game-btn:hover {
+  text-decoration: none;
+}
+.page-breadcrumb .page-title {
+  margin-top: 0px;
+}
+.white-box .box-title {
+  margin-top: 0px;
+}
+ul.chart-legend {
+  float: left;
+  width: 100%;
+  margin: 0px;
+  padding: 0px 0px 20px 0px;
+  list-style: none;
+  text-align: center;
+}
+ul.chart-legend > li {
+  display: inline-block;
+  padding: 0px 10px;
+}
+.comment-widgets {
+  margin-bottom: 0px;
+  padding-bottom: 15px;
+}
+.comment-widgets .comment-row {
+  margin-bottom: 0px;
+  padding: 12px 25px;
+}
+.comment-text h5 {
+  margin-top: 0px;
+  margin-bottom: 3px;
+}
+.card .card-body {
+  border-bottom: 1px solid #ededed;
+  padding: 15px 25px;
+}
+.badge {
+  font-weight: 500 !important;
+  font-size: 10px !important;
+  margin-right: 5px !important;
+}
+.badge:first-of-type {
+  margin-left: 0px !important;
+}
+.comment-footer > span {
+  font-size: 11px;
+  padding-right: 10px;
+}
+.comment-footer > span.increasing {
+  color: #48e496;
+}
+.comment-footer > span.decreasing {
+  color: #eb4c61;
+}
+.comment-footer > span.neutral {
+  color: #8a8a8a;
+}
+.comment-footer > span.badge {
+  padding: 3px 5px !important;
+}
